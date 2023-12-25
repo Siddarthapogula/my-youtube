@@ -14,6 +14,7 @@ const Header = () => {
   const [ searchText , setSearchText] = useState(""); 
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
   const cache = useSelector(store => store.cache)
+  const navigate = useNavigate();
     
   const dispatch = useDispatch();
   const handleSlideBar = ()=>{
@@ -21,16 +22,20 @@ const Header = () => {
       dispatch(ToggleOpenMenu());
   }
   const getSearchSuggestions = async()=>{
+     try{
       const data = await fetch("http://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q="+searchText);
       const response = await data.json();
       dispatch (addSearchSuggestions(response[1]));
       dispatch(addCache({
         [searchText] : response[1]
   }))
+}
+  catch(e){
+    console.log(e);
+  }
   }
   const suggestions = useSelector(store=> store.search.searchSuggestions);
 
-  // console.log(cache);
   useEffect(()=>{
     const timer = setTimeout(() => {
        if (searchText && cache[searchText]) {
@@ -57,7 +62,9 @@ const Header = () => {
       onFocus={()=>setIsSuggestionsOpen(true)}
       onScroll={()=>setIsSuggestionsOpen(false)}
       >
-
+        <form onSubmit={()=>{
+          navigate('/suggestedvideos/'+searchText)
+        }}>
         <input className= ' w-3/4  border border-l-gray-300 p-2 rounded-l-full' type=' text ' placeholder={'Search'}
           value={searchText}
           onChange={(e)=>{
@@ -65,19 +72,23 @@ const Header = () => {
           }}
         />
         <button className=' border-gray-500  bg-gray-100 p-[0.55rem] px-[1.5rem]  rounded-r-full '><FontAwesomeIcon icon={faSearch} /></button>
-    
+
         {isSuggestionsOpen && (
-  <div className='fixed bg-gray-50 w-[30rem] rounded-lg'
+   <div className='fixed bg-gray-50 w-[30rem] rounded-lg'
   onFocus={()=>setIsSuggestionsOpen(true)}
       onBlur={()=>setIsSuggestionsOpen(false)}>
     {suggestions &&
       suggestions.map((s, index) => (
-        <Link to={'/suggestedvideos/'+s}  key={index}>
+        <Link to={'/suggestedvideos/'+s} onClick={()=>{
+          setSearchText("")
+        }}  key={index}>
           <SearchSuggestions data={s} />
         </Link>
       ))}
   </div>
 )}
+          </form>
+     
       </div>
       <div>
         <img className=' w-12' src='https://th.bing.com/th/id/R.7ea4af7d8401d2b43ee841bfa2abe89d?rik=xidyUKdveUKULQ&riu=http%3a%2f%2fpluspng.com%2fimg-png%2fuser-png-icon-download-icons-logos-emojis-users-2240.png&ehk=2%2bOqgdMZqFkKaBclc%2fPL9B86vLju3iBGiFmH64kXaTM%3d&risl=&pid=ImgRaw&r=0'/>

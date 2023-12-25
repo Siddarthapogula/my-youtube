@@ -20,7 +20,6 @@ const LiveChat = () => {
   useEffect(()=>{
     const timer = setInterval(()=>{
       dispatch(addLiveChat({name:get_random(indianNames), message: get_messages(messages)}))
-      console.log("chat added")
     },1500)
     return ()=>{
       clearInterval(timer);

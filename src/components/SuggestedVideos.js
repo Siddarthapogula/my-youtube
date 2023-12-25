@@ -6,17 +6,14 @@ import SuggestedVideoCards from './SuggestedVideoCards';
 const SuggestedVideos = () => {
      const {query} = useParams();
      const [suggestedVideos, setSuggestedVideos] = useState(null);
-     console.log(query);
         const getSuggestedVideos = async ()=>{
             const data = await fetch('https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=50&q='+query+'&key='+API_KEY);
             const response = await data.json();
             setSuggestedVideos(response?.items)
-            console.log(response?.items);
         }
      useEffect(()=>{
         getSuggestedVideos();
      },[query])
-     {suggestedVideos &&console.log(suggestedVideos[0])}
      
   return (
     <div className='w-[93%]'>

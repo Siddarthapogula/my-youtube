@@ -11,7 +11,7 @@ const SuggestedVideoCards = ({data}) => {
     },[])
 
   return (
-    <div className='flex mt-[1rem] '>
+    <div className='flex ml-10 mt-[1rem] '>
         <div className='w-[22rem] h-[12rem]  object-cover  '>
                 <img className='w-[22rem] h-full object-cover object-center rounded-xl' src={snippet?.thumbnails?.high?.url}/>
         </div>

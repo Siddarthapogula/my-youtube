@@ -22,7 +22,6 @@ const WatchPage = () => {
     const [chatText, setChatText] = useState("");
   const isSidebarOpen = useSelector(store => store.app.isOpenMenu);
     
-    // console.log(chat)
     useEffect(()=>{
         dispatch(CloseSideBar());
     },[])

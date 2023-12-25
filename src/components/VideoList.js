@@ -23,11 +23,14 @@ const VideoList = () => {
     getVideos();
   }, []);
 
-  useEffect(() => {
-  }, [videos]);
   {videos && dispatch(addMovies(videos.items))}
   return (
-    <div className='  flex flex-wrap justify-evenly'>
+
+    <div className='  flex flex-wrap justify-evenly'
+      onScroll={()=>{
+
+      }}
+    >
       {videos && videos.items && videos.items.map((video, index) => (
         <Link to={"/watch?v="+video.id} > <VideoCard key={index} info={video} /></Link>
       ))}
