@@ -7,10 +7,22 @@ import { addCommentChannelName, addMovies } from './utils/movieSlice';
 import like from '../Photos/like.png'
 import { indianNames } from './utils/constants';
 import SideVideoCards from './SideVideoCards';
+import LiveChat from './LiveChat';
+import { addLiveChat } from './utils/chatSlice';
+import send from "../Photos/send.png"
+
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAngleDown } from '@fortawesome/free-solid-svg-icons' 
 
 const WatchPage = () => {
   const [params] = useSearchParams();
     const dispatch = useDispatch();
+    const chat = useSelector(store => store.chat);
+    const [chatText, setChatText] = useState("");
+  const isSidebarOpen = useSelector(store => store.app.isOpenMenu);
+    
+    // console.log(chat)
     useEffect(()=>{
         dispatch(CloseSideBar());
     },[])
@@ -28,7 +40,6 @@ const WatchPage = () => {
         
         setVideos(data);
       } catch (error) {
-        // console.error('Error fetching videos:', error);
       }
     };
   
@@ -70,6 +81,7 @@ const WatchPage = () => {
       
     }
 
+
     useEffect(()=>{
         getCurrentVideo();
     },[params])
@@ -82,6 +94,9 @@ const WatchPage = () => {
   return (
     <div className=' flex'>
       <div className=' ml-16 mt-6 w-[55%]'>
+      {/* <div className={` mt-6 ${isSidebarOpen ? 'ml-0  w-[55%]' : 'ml-16  w-[55%]'}`}> */}
+        <div className=' flex z-10'>
+          <div>
       <iframe className='  rounded-xl ' width="680" height="395" 
       src={"https://www.youtube.com/embed/"+params.get("v")+"?&autoplay=1"}
        title="YouTube video player" frameBorder="0" 
@@ -105,6 +120,9 @@ const WatchPage = () => {
                     <button className='flex gap-3'><img className='w-6 ' src={like}/> {currentVideo?.statistics?.likeCount}</button>
                     </div>
               </div>
+            </div >
+
+        </div>
               <div  className='p-2 bg-gray-100 rounded-xl'>
                 <p>
                     {currentVideo?.snippet?.description}
@@ -121,10 +139,30 @@ const WatchPage = () => {
                 </div>
       </div>
 
-      <div>
-                    {
-                     videos1 && videos1.map((video,index)=><Link  to={"/watch?v="+video.id}><SideVideoCards key={index} info= {video?.snippet}/></Link>)
-                    }
+      <div className=' mt-[1.5rem] '>
+        {/* <div className=' ml-[1rem] '> */}
+      <div className={` ${isSidebarOpen ? ' hidden' : 'block'} ml-[1rem]`}>
+
+          <div className=' p-1 flex bg-gray-100 rounded-lg w-[24rem]'><h1  className='ml-3'>Live Chat</h1> <FontAwesomeIcon className=' translate-y-[5px] ml-2' icon={faAngleDown}/> </div>
+        <div className=' h-[26rem] w-[80%] border border-gray-300  rounded-lg overflow-y-scroll overflow-x-hidden '>
+              <LiveChat  />
+          </div>
+          <form onSubmit={(e)=>{
+              e.preventDefault();
+              dispatch(addLiveChat({
+                name: "siddarth",
+                message: chatText,
+          }))
+          setChatText("")
+          }} > 
+          <input className='rounded-lg p-1 bg-gray-200  w-[23rem]' type='text' placeholder='Send Some Message!!' value={chatText} onChange={(e)=>{
+              setChatText(e.target.value);}}
+              onsu
+              />
+          <button><img className='pt-[6px] ml-[2px]  w-6' src={send}/></button>
+        </form>  
+        </div>
+        <div className=' mt-[2rem]'>{ videos1 && videos1.map((video,index)=><Link  to={"/watch?v="+video.id}><SideVideoCards key={index} info= {video?.snippet}/></Link>)}</div>
       </div>              
     </div>
     

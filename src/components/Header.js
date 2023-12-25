@@ -51,20 +51,20 @@ const Header = () => {
     <div className=' flex justify-between my-3 px-2 shadow-lg '>
       <div className=' flex w-3/12'>
         <img onClick={()=>handleSlideBar()} className=' w-8 h-8 cursor-pointer' alt='sideBar' src='https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hamburger_icon.svg/1024px-Hamburger_icon.svg.png'/>
-       <img className=' cursor-pointer w-24 ml-4 -translate-y-2 pb-2' alt='ytLogo' src='https://logos-world.net/wp-content/uploads/2020/04/YouTube-Logo-2017-present.jpg'/>
+       <Link to="/"><img className=' cursor-pointer w-24 ml-4 -translate-y-2 pb-2' alt='ytLogo' src='https://logos-world.net/wp-content/uploads/2020/04/YouTube-Logo-2017-present.jpg'/></Link>
       </div>
       <div className='w-1/2 items-center mt-1 mr-24'
       onFocus={()=>setIsSuggestionsOpen(true)}
       onScroll={()=>setIsSuggestionsOpen(false)}
       >
 
-        <input className= ' w-3/4  border border-gray-300 p-2 rounded-l-full' type=' text ' placeholder={'Search'}
+        <input className= ' w-3/4  border border-l-gray-300 p-2 rounded-l-full' type=' text ' placeholder={'Search'}
           value={searchText}
           onChange={(e)=>{
             setSearchText(e.target.value);
           }}
         />
-        <button className=' border-gray-500  bg-gray-200 p-[0.55rem]  rounded-r-full '><FontAwesomeIcon icon={faSearch} /></button>
+        <button className=' border-gray-500  bg-gray-100 p-[0.55rem] px-[1.5rem]  rounded-r-full '><FontAwesomeIcon icon={faSearch} /></button>
     
         {isSuggestionsOpen && (
   <div className='fixed bg-gray-50 w-[30rem] rounded-lg'
@@ -72,7 +72,7 @@ const Header = () => {
       onBlur={()=>setIsSuggestionsOpen(false)}>
     {suggestions &&
       suggestions.map((s, index) => (
-        <Link to={'/suggestedvideos/'+s} key={index}>
+        <Link to={'/suggestedvideos/'+s}  key={index}>
           <SearchSuggestions data={s} />
         </Link>
       ))}
